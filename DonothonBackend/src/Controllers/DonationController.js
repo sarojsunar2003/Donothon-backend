@@ -49,34 +49,28 @@ const upload = multer({
 }).single("image");
 
 const addDataWithFile = async (req, res) => {
-try{
+
     upload(req, res, async (err) => {
-
         if (err) {
+            console.log(err)
             res.status(500).json({
-                message: err.message,
+                message: "Internal server error",
             });
-        } else {
-            const filepath = path.resolve(req.file.path)
-            const cloundinaryResponse = await cloudinaryUtil.uploadFileToCloudanry(fs.createReadStream(filepath));
-            console.log(cloundinaryResponse);
-            req.body.imageURL = cloundinaryResponse.secure_url
-            const savedDonation = await donationModel.create(req.body);
+        } try {
+            const filepath = path.resolve(req.file.path);
+            const cloudinaryResponse = await cloudinaryUtil.uploadFileToCloudanry(filepath);
+            req.body.imageURL = cloudinaryResponse.secure_url;
 
+            const savedDonation = await donationModel.create(req.body);
             res.status(201).json({
                 message: "donation post successfully",
                 data: savedDonation
             });
+        } catch (error) {
+            console.error("Upload Error:", error);
+            res.status(500).json({ message: "Upload failed", error });
         }
-
     });
-
-}catch(err){
-    res.status(500).json({
-        message:'Internal server error...'
-    })
-    console.log(err)
-}
 }
 
 const updateDonation = async(req,res) => {

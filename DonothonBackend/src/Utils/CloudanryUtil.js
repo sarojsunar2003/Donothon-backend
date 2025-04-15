@@ -8,7 +8,7 @@ const uploadFileToCloudanry = async (file) => {
         api_secret: "fmL1oODG6p7RhZRCbzoxSQKs5L4"
     });
     console.log(file)
-    const res = await cloudanry.uploader.upload(file.path);
+    const res = await cloudanry.uploader.upload(file);
     return res;
 }
 
