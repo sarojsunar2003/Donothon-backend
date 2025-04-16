@@ -32,6 +32,9 @@ app.use("/area",AreaRoutes)
 const RequestRoutes = require("./src/Routes/DonationRequestRoutes")
 app.use("/request",RequestRoutes)
 
+const HistoryRoutes = require("./src/Routes/HistoryRoutes")
+app.use("/history",HistoryRoutes)
+
 mongoose.connect("mongodb://127.0.0.1:27017/25_Donothon").then(()=>{
     console.log("databse connects...")
 })
